@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       columns: [
-        { title: "姓名", dataIndex: "name", type: "input" },
+        { title: "姓名", dataIndex: "name", filterType: "Input" },
         { title: "年龄", dataIndex: "age" },
         {
           title: "操作",
@@ -48,7 +48,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
 }
 
 .page-wrapper {

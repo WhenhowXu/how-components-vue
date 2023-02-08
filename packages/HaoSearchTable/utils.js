@@ -1,13 +1,15 @@
 const isColumnSearchable = (record) => {
-  return !!record.fieldType;
+  return !!record.filterType;
 };
-export const transformColumnsToFields = (columns) => {
+export const filterSearchFields = (columns) => {
   if (!Array.isArray(columns)) return [];
   return columns
     .filter((c) => isColumnSearchable(c))
     .map((v) => {
       return {
         label: v.title,
+        prop: v.dataIndex,
+        type: v.filterType
       };
     });
 };

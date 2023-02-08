@@ -1,6 +1,6 @@
 import HaoFilters from "../../packages/HaoFilters";
 import { Table, Pagination } from "ant-design-vue";
-import { filterTableColumns } from "./utils";
+import { filterTableColumns, filterSearchFields } from "./utils";
 import { getOptionProps } from "ant-design-vue/lib/_util/props-util";
 
 export default {
@@ -10,10 +10,16 @@ export default {
     dataSource: { type: Array, default: () => [] },
     total: { type: Number, default: 0 },
     size: { type: String, default: "small" },
+    filters: { type: Object, default: () => ({}) },
   },
   render() {
-    const { columns, dataSource, total, $slots } = this;
-    const filterProps = {};
+    const { columns, dataSource, total,filters } = this;
+    const filterProps = {
+      props: {
+        feilds: filterSearchFields(columns),
+        formData: filters,
+      },
+    };
     let props = getOptionProps(this);
     const tableProps = {
       props: {
@@ -29,7 +35,7 @@ export default {
     return (
       <div>
         <HaoFilters {...filterProps} />
-        <Table {...tableProps}>{$slots.default}</Table>
+        <Table {...tableProps} />
         <Pagination {...paginationProps} />
       </div>
     );
