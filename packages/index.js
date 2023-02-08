@@ -1,7 +1,7 @@
 import HaoFilters from "./HaoFilters";
 import HaoSearchTable from "./HaoSearchTable";
-
-const components = [HaoFilters, HaoSearchTable];
+import HaoOperation from "./HaoOperation";
+const components = [HaoFilters, HaoSearchTable, HaoOperation];
 
 const install = (Vue) => {
   if (install.installed) return Vue;

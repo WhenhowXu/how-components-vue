@@ -12,6 +12,7 @@
   "dependencies": {
     "ant-design-vue": "^1.7.8",
     "core-js": "^3.8.3",
+    "omit": "^1.0.1",
     "vue": "^2.6.14"
   },
   "devDependencies": {

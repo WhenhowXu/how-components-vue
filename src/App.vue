@@ -1,7 +1,14 @@
 <template>
   <div id="app">
-    <p>KKKKKKKKKKKKKKKKKKKKKKkk</p>
-    <h-search-table :columns="columns" />
+    <div class="page-wrapper">
+      <h-search-table :columns="columns" :dataSource="dataSource" :total="20">
+        <h3 slot="title">表格标题</h3>
+        <template slot="operations" slot-scope="text, record">
+          <h-Operation @click="onDelete(record)">删除</h-Operation>
+        </template>
+      </h-search-table>
+      <h-Operation>删除</h-Operation>
+    </div>
   </div>
 </template>
 
@@ -10,10 +17,29 @@ export default {
   name: "App",
   data() {
     return {
-      columns: [{ title: "姓名", key: "c1" }],
+      columns: [
+        { title: "姓名", dataIndex: "name", type: "input" },
+        { title: "年龄", dataIndex: "age" },
+        {
+          title: "操作",
+          dataIndex: "operations",
+          fixed: "right",
+          scopedSlots: { customRender: "operations" },
+        },
+      ],
+      dataSource: Array.from({ length: 10 }).map((v, i) => {
+        return {
+          id: i,
+          name: "张三" + i,
+          age: 3,
+        };
+      }),
     };
   },
   components: {},
+  methods: {
+    onDelete() {},
+  },
 };
 </script>
 
@@ -23,7 +49,14 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.page-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: lemonchiffon;
 }
 </style>
