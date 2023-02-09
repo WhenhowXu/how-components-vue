@@ -11,9 +11,10 @@ export default {
     total: { type: Number, default: 0 },
     size: { type: String, default: "small" },
     filters: { type: Object, default: () => ({}) },
+    
   },
   render() {
-    const { columns, dataSource, total,filters } = this;
+    const { columns, dataSource, total, filters } = this;
     const filterProps = {
       props: {
         feilds: filterSearchFields(columns),
@@ -36,7 +37,9 @@ export default {
       <div>
         <HaoFilters {...filterProps} />
         <Table {...tableProps} />
-        <Pagination {...paginationProps} />
+        <div style={{ textAlign: "right" }}>
+          <Pagination {...paginationProps} />
+        </div>
       </div>
     );
   },

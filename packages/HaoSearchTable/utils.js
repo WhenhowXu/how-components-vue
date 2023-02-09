@@ -9,14 +9,16 @@ export const filterSearchFields = (columns) => {
       return {
         label: v.title,
         prop: v.dataIndex,
-        type: v.filterType
+        type: v.filterType,
       };
     });
 };
 
 export const filterTableColumns = (columns) => {
   if (!Array.isArray(columns)) return [];
-  return columns.map((v) => {
-    return v
-  });
+  return columns
+    .filter((c) => !c.justInFilter)
+    .map((v) => {
+      return v;
+    });
 };
