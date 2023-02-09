@@ -11,10 +11,11 @@ export default {
     total: { type: Number, default: 0 },
     size: { type: String, default: "small" },
     filters: { type: Object, default: () => ({}) },
-    
+    orderable: { type: Boolean, default: false },
+    emptyTag: { type: String, default: "--" }, // 单元格无数据占位符
   },
   render() {
-    const { columns, dataSource, total, filters } = this;
+    const { columns, dataSource, total, filters, $scopedSlots } = this;
     const filterProps = {
       props: {
         feilds: filterSearchFields(columns),
@@ -29,6 +30,7 @@ export default {
         dataSource,
         pagination: false,
       },
+      scopedSlots: $scopedSlots,
     };
     const paginationProps = {
       props: { total },
