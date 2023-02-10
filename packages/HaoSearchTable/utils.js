@@ -14,11 +14,25 @@ export const filterSearchFields = (columns) => {
     });
 };
 
-export const filterTableColumns = (columns) => {
+export const filterTableColumns = (
+  columns,
+  { orderable, defaultColumnWdith } = {}
+) => {
   if (!Array.isArray(columns)) return [];
-  return columns
+  let _columns = columns
     .filter((c) => !c.justInFilter)
     .map((v) => {
+      v.width = v.width || defaultColumnWdith;
       return v;
     });
+  if (orderable) {
+    _columns.unshift({
+      title: "序号",
+      dataIndex: "ORDER",
+      width: 70,
+      ellipsis: true,
+      customRender: (text, record, index) => index + 1,
+    });
+  }
+  return _columns;
 };

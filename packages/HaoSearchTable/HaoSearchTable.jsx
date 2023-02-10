@@ -2,20 +2,31 @@ import HaoFilters from "../../packages/HaoFilters";
 import { Table, Pagination } from "ant-design-vue";
 import { filterTableColumns, filterSearchFields } from "./utils";
 import { getOptionProps } from "ant-design-vue/lib/_util/props-util";
-
+import "./index.less";
 export default {
   name: "HSearchTable",
   props: {
     columns: { type: Array, default: () => [] },
+    loading: { type: Boolean, default: false },
     dataSource: { type: Array, default: () => [] },
     total: { type: Number, default: 0 },
     size: { type: String, default: "small" },
     filters: { type: Object, default: () => ({}) },
     orderable: { type: Boolean, default: false },
     emptyTag: { type: String, default: "--" }, // 单元格无数据占位符
+    defaultColumnWdith: { type: Number, default: 70 },
   },
   render() {
-    const { columns, dataSource, total, filters, $scopedSlots } = this;
+    const {
+      columns,
+      dataSource,
+      total,
+      filters,
+      $scopedSlots,
+      $attrs,
+      defaultColumnWdith,
+      orderable,
+    } = this;
     const filterProps = {
       props: {
         feilds: filterSearchFields(columns),
@@ -26,21 +37,34 @@ export default {
     const tableProps = {
       props: {
         ...props,
-        columns: filterTableColumns(columns),
+        columns: filterTableColumns(columns, { defaultColumnWdith, orderable }),
+        rowKey: $attrs.rowKey,
         dataSource,
         pagination: false,
+        scroll: { x: "max-content", y: "calc(100vh - 260px)" },
       },
       scopedSlots: $scopedSlots,
     };
     const paginationProps = {
-      props: { total },
+      props: {
+        total,
+        showLessItems: false,
+        showQuickJumper: true,
+        showSizeChanger: true,
+        showTotal: (total) => <span>共{total}条数据</span>,
+        pageSizeOptions: ["50", "100", "400"],
+      },
     };
     return (
-      <div>
+      <div class="hao-serach-table-wrapper">
         <HaoFilters {...filterProps} />
         <Table {...tableProps} />
-        <div style={{ textAlign: "right" }}>
-          <Pagination {...paginationProps} />
+        <div class="hao-pagination-wrapper">
+          <Pagination
+            {...paginationProps}
+            v-model={filters.page}
+            pageSize={filters.size}
+          />
         </div>
       </div>
     );

@@ -28,28 +28,39 @@ export default {
     feilds: { type: Array, default: () => [] },
     formData: { type: Object, default: () => ({}) },
     allAllowClear: { type: Boolean, default: true },
+    labelWidth: { type: Number, default: 70 },
+    fieldWidth: { type: Number, default: 240 },
   },
   methods: {
     renderFields(feilds = []) {
       if (!Array.isArray(feilds)) return "";
-      const { formData, allAllowClear } = this;
+      const { formData, allAllowClear, labelWidth } = this;
       return feilds.map((f) => {
         const T = FieldComponents[f.type];
         const itemProps = {
           props: {
-            label: f.label,
-            value: formData[f.name],
+            label: () => (
+              <span
+                style={{
+                  display: "inline-block",
+                  width: (f.labelWidth || labelWidth) + "px",
+                }}
+              >
+                {f.label}
+              </span>
+            ),
           },
         };
         const fieldProps = {
           props: {
             placeholder: getPlacehoder(f),
             allowClear: allAllowClear,
+            style: { width: '100%' },
           },
         };
         return T ? (
           <FormModel.Item {...itemProps}>
-            <T {...fieldProps} />
+            <T {...fieldProps} v-model={formData[f.prop]} />
           </FormModel.Item>
         ) : (
           ""
