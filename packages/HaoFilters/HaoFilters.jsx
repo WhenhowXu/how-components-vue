@@ -49,6 +49,7 @@ export default {
                 {f.label}
               </span>
             ),
+            prop: f.prop
           },
         };
         const fieldProps = {
@@ -68,10 +69,11 @@ export default {
       });
     },
     onSearch() {
-      console.log(this.formData, "2kkkkkkkkkkk");
+      this.$emit("search", this.formData);
     },
     onReset() {
-      console.log(this.formData, "1kkkkkkkkkkk");
+      this.$refs.searchFormRef.resetFields();
+      this.$emit('reset', this.formData);
     },
   },
   render() {
@@ -84,14 +86,14 @@ export default {
     };
 
     return (
-      <FormModel {...formModelProps}>
+      <FormModel {...formModelProps} ref="searchFormRef">
         {this.renderFields(feilds)}
         <FormModel.Item>
           <Space>
-            <Button onClick={onReset}>重置</Button>
-            <Button type="primary" onClick={onSearch}>
-              搜索
+            <Button icon="search" type="primary" onClick={onSearch}>
+              查询
             </Button>
+            <Button icon="redo" onClick={onReset}>重置</Button>
             <HaoFoldButton />
           </Space>
         </FormModel.Item>

@@ -19,5 +19,5 @@ export const getChildrens = (params) => {
       params.page * params.size
     ),
   };
-  return generateApi(data);
+  return generateApi(data, 300);
 };

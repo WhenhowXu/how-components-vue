@@ -9,8 +9,11 @@
           :filters="filters"
           :columns="columns"
           :dataSource="dataSource"
-          :total="20"
+          :total="total"
           :defaultColumnWdith="100"
+          @search="updateFildters({ page: 1 })"
+          @reset="updateFildters({ page: 1})"
+          @pageChange="updateFildters"
         >
           <div slot="title" class="hao-search-table-title">
             <h3 :style="{ fontWeight: 'bold' }">学生列表</h3>

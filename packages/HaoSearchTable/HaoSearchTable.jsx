@@ -16,6 +16,11 @@ export default {
     emptyTag: { type: String, default: "--" }, // 单元格无数据占位符
     defaultColumnWdith: { type: Number, default: 70 },
   },
+  methods: {
+    onSizeChange(page, size) {
+      this.$emit("pageChange", { page, size });
+    },
+  },
   render() {
     const {
       columns,
@@ -24,13 +29,19 @@ export default {
       filters,
       $scopedSlots,
       $attrs,
+      $listeners,
       defaultColumnWdith,
       orderable,
+      onSizeChange,
     } = this;
     const filterProps = {
       props: {
         feilds: filterSearchFields(columns),
         formData: filters,
+      },
+      on: {
+        search: $listeners.search,
+        reset: $listeners.reset,
       },
     };
     let props = getOptionProps(this);
@@ -53,6 +64,10 @@ export default {
         showSizeChanger: true,
         showTotal: (total) => <span>共{total}条数据</span>,
         pageSizeOptions: ["50", "100", "400"],
+      },
+      on: {
+        onSizeChange: onSizeChange,
+        change: onSizeChange,
       },
     };
     return (
