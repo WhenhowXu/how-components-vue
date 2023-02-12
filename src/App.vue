@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <a-config-provider :locale="localZh">
-      <div class="page-wrapper">
+      <AppLayout>
         <h-search-table
           rowKey="id"
           orderable
@@ -12,21 +12,19 @@
           :total="total"
           :defaultColumnWdith="100"
           @search="updateFildters({ page: 1 })"
-          @reset="updateFildters({ page: 1})"
+          @reset="updateFildters({ page: 1 })"
           @pageChange="updateFildters"
         >
-          <div slot="title" class="hao-search-table-title">
+          <div slot="title" class="table-header">
             <h3 :style="{ fontWeight: 'bold' }">学生列表</h3>
             <a-button type="primary">TEST</a-button>
           </div>
           <template slot="operations" slot-scope="text, record">
-            <h-operation @click="onDelete(record)"
-              >编辑</h-operation
-            >
+            <h-operation @click="onDelete(record)">编辑</h-operation>
             <h-operation @click="onDelete(record)">删除</h-operation>
           </template>
         </h-search-table>
-      </div>
+      </AppLayout>
     </a-config-provider>
   </div>
 </template>
@@ -34,6 +32,7 @@
 <script>
 import localZh from "ant-design-vue/lib/locale/zh_CN";
 import { getChildrens } from "@/api/list";
+import AppLayout from "@/layout";
 
 const customColumns = Array.from({ length: 10 }).map((v, i) => ({
   title: "COLUMN" + i + 1,
@@ -41,6 +40,9 @@ const customColumns = Array.from({ length: 10 }).map((v, i) => ({
 }));
 export default {
   name: "App",
+  components: {
+    AppLayout,
+  },
   data() {
     return {
       localZh,
@@ -88,9 +90,9 @@ export default {
         },
       ],
       dataSource: [],
+      total: 0
     };
   },
-  components: {},
   methods: {
     updateFildters(changeFilters) {
       Object.assign(this.filters, changeFilters);
@@ -117,18 +119,10 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.page-wrapper {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px;
-}
-.hao-search-table-title {
-  display: flex;
-  justify-content: space-between;
+  .table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 </style>

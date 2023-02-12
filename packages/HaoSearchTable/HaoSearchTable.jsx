@@ -1,8 +1,8 @@
+import "./index.less";
 import HaoFilters from "../../packages/HaoFilters";
 import { Table, Pagination } from "ant-design-vue";
 import { filterTableColumns, filterSearchFields } from "./utils";
 import { getOptionProps } from "ant-design-vue/lib/_util/props-util";
-import "./index.less";
 export default {
   name: "HSearchTable",
   props: {
@@ -16,10 +16,21 @@ export default {
     emptyTag: { type: String, default: "--" }, // 单元格无数据占位符
     defaultColumnWdith: { type: Number, default: 70 },
   },
+  data() {
+    return {
+      scrollY: undefined,
+    };
+  },
   methods: {
     onSizeChange(page, size) {
       this.$emit("pageChange", { page, size });
     },
+    setScrollY() {
+      this.scrollY = this.$refs.searchTableRef.clientHeight - 100;
+    },
+  },
+  mounted() {
+    this.setScrollY();
   },
   render() {
     const {
@@ -33,6 +44,7 @@ export default {
       defaultColumnWdith,
       orderable,
       onSizeChange,
+      scrollY,
     } = this;
     const filterProps = {
       props: {
@@ -52,7 +64,9 @@ export default {
         rowKey: $attrs.rowKey,
         dataSource,
         pagination: false,
-        scroll: { x: "max-content", y: "calc(100vh - 260px)" },
+        scroll: scrollY
+          ? { x: "max-content", y: scrollY }
+          : { x: "max-content" },
       },
       scopedSlots: $scopedSlots,
     };
@@ -73,7 +87,9 @@ export default {
     return (
       <div class="hao-serach-table-wrapper">
         <HaoFilters {...filterProps} />
-        <Table {...tableProps} />
+        <div class="hao-table-wrapper" ref="searchTableRef">
+          <Table {...tableProps} />
+        </div>
         <div class="hao-pagination-wrapper">
           <Pagination
             {...paginationProps}
