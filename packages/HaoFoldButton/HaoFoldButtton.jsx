@@ -18,12 +18,12 @@ const HaoFoldButtton = {
     let { toggelFold, value } = this;
     return (
       <Button
-        icon={!value ? "down" : "up"}
+        icon={value ? "down" : "up"}
         type="link"
         onClick={toggelFold}
         style={{ padding: 0 }}
       >
-        {value ? "收起" : "展开"}
+        {!value ? "收起" : "展开"}
       </Button>
     );
   },

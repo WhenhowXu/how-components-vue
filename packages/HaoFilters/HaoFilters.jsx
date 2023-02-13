@@ -1,3 +1,4 @@
+import "./index.less";
 import {
   FormModel,
   Input,
@@ -41,35 +42,32 @@ export default {
   methods: {
     renderFields(feilds = []) {
       if (!Array.isArray(feilds)) return "";
-      const { formData, allAllowClear, labelWidth } = this;
+      let showSpan = 6;
+      const { formData, allAllowClear, collapsed } = this;
       return feilds.map((f) => {
         const T = FieldComponents[f.type];
+        showSpan += 6;
         const itemProps = {
           props: {
-            label: () => (
-              <span
-                style={{
-                  display: "inline-block",
-                  width: (f.labelWidth || labelWidth) + "px",
-                }}
-              >
-                {f.label}
-              </span>
-            ),
+            label: f.label,
             prop: f.prop,
+            labelCol: { span: 6 },
+            wrapperCol: { span: 16 },
           },
         };
         const fieldProps = {
           props: {
             placeholder: getPlacehoder(f),
             allowClear: allAllowClear,
-            style: { width: "100%" },
           },
+          style: { width: "100%" },
         };
         return T ? (
-          <FormModel.Item {...itemProps}>
-            <T {...fieldProps} v-model={formData[f.prop]} />
-          </FormModel.Item>
+          <Col span={6} v-show={collapsed ? showSpan <= 24 : true}>
+            <FormModel.Item {...itemProps}>
+              <T {...fieldProps} v-model={formData[f.prop]} />
+            </FormModel.Item>
+          </Col>
         ) : (
           ""
         );
@@ -87,16 +85,16 @@ export default {
     let { feilds, formData, onSearch, onReset } = this;
     let formModelProps = {
       props: {
-        layout: "inline",
         model: formData,
       },
+      class: "hao-filters-form",
     };
 
     return (
       <FormModel {...formModelProps} ref="searchFormRef">
-        <Row justify="start">
+        <Row justify="start" type="flex">
           {this.renderFields(feilds)}
-          <Col>
+          <Col span={6} flex={1} align="right">
             <FormModel.Item>
               <Space>
                 <Button icon="search" type="primary" onClick={onSearch}>
