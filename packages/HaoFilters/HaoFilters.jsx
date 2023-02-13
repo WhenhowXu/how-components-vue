@@ -7,6 +7,8 @@ import {
   DatePicker,
   Button,
   Space,
+  Row,
+  Col,
 } from "ant-design-vue";
 import { FilterTypes } from "./enums";
 import HaoFoldButton from "../HaoFoldButton";
@@ -31,6 +33,11 @@ export default {
     labelWidth: { type: Number, default: 70 },
     fieldWidth: { type: Number, default: 240 },
   },
+  data() {
+    return {
+      collapsed: false,
+    };
+  },
   methods: {
     renderFields(feilds = []) {
       if (!Array.isArray(feilds)) return "";
@@ -49,14 +56,14 @@ export default {
                 {f.label}
               </span>
             ),
-            prop: f.prop
+            prop: f.prop,
           },
         };
         const fieldProps = {
           props: {
             placeholder: getPlacehoder(f),
             allowClear: allAllowClear,
-            style: { width: '100%' },
+            style: { width: "100%" },
           },
         };
         return T ? (
@@ -73,11 +80,11 @@ export default {
     },
     onReset() {
       this.$refs.searchFormRef.resetFields();
-      this.$emit('reset', this.formData);
+      this.$emit("reset", this.formData);
     },
   },
   render() {
-    const { feilds, formData, onSearch, onReset } = this;
+    let { feilds, formData, onSearch, onReset } = this;
     let formModelProps = {
       props: {
         layout: "inline",
@@ -87,16 +94,22 @@ export default {
 
     return (
       <FormModel {...formModelProps} ref="searchFormRef">
-        {this.renderFields(feilds)}
-        <FormModel.Item>
-          <Space>
-            <Button icon="search" type="primary" onClick={onSearch}>
-              查询
-            </Button>
-            <Button icon="redo" onClick={onReset}>重置</Button>
-            <HaoFoldButton />
-          </Space>
-        </FormModel.Item>
+        <Row justify="start">
+          {this.renderFields(feilds)}
+          <Col>
+            <FormModel.Item>
+              <Space>
+                <Button icon="search" type="primary" onClick={onSearch}>
+                  查询
+                </Button>
+                <Button icon="redo" onClick={onReset}>
+                  重置
+                </Button>
+                <HaoFoldButton v-model={this.collapsed} />
+              </Space>
+            </FormModel.Item>
+          </Col>
+        </Row>
       </FormModel>
     );
   },

@@ -3,28 +3,27 @@ import { Button } from "ant-design-vue";
 const HaoFoldButtton = {
   name: "HFoldButtton",
   props: {
-    defaultFold: { type: Boolean, default: false },
+    value: Boolean,
   },
-  data() {
-    return {
-      fold: this.defaultFold,
-    };
+  model: {
+    prop: "value",
+    event: "update",
   },
   methods: {
     toggelFold() {
-      this.fold = !this.fold;
+      this.$emit("update", !this.value);
     },
   },
   render() {
-    const { fold, toggelFold } = this;
+    let { toggelFold, value } = this;
     return (
       <Button
-        icon={!fold ? "down" : "up"}
+        icon={!value ? "down" : "up"}
         type="link"
         onClick={toggelFold}
         style={{ padding: 0 }}
       >
-        {fold ? "收起" : "展开"}
+        {value ? "收起" : "展开"}
       </Button>
     );
   },
