@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       scrollY: undefined,
+      tableColumns: [],
     };
   },
   methods: {
@@ -80,7 +81,7 @@ export default {
         pageSizeOptions: ["50", "100", "400"],
       },
       on: {
-        onSizeChange: onSizeChange,
+        showSizeChange: onSizeChange,
         change: onSizeChange,
       },
     };

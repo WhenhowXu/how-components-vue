@@ -23,8 +23,9 @@ export default {
   },
   watch: {
     themeKey: {
-      handler: function (val) {
-        document.body.setAttribute('theme-mode', val)
+      handler: function (val, oldVal) {
+        if (val && val === oldVal) return;
+        document.documentElement.setAttribute("theme-mode", val);
       },
       immediate: true,
     },

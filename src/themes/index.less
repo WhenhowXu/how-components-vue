@@ -1,11 +1,17 @@
 :root {
-  body[theme-mode="light"] {
-    --bg-color: #15663a;
+  &[theme-mode="light"] {
+    --nav-bg-color: orange; // 导航栏背景色色
+    --nav-title-color: #fff; // 导航栏标题颜色
   }
-  body[theme-mode="dark"] {
-    --bg-color: #787e34;
+  &[theme-mode="dark"] {
+    --nav-bg-color: #0747a6;
+    --nav-title-color: #fff;
   }
 }
 .app-header{
-    background-color: var(--bg-color);
+    background-color: var(--nav-bg-color);
+    color: var(--nav-title-color);;
+    h3{
+      color: var(--nav-title-color);
+    }
 }
