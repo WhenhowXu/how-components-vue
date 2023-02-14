@@ -10,6 +10,7 @@ export const filterSearchFields = (columns) => {
         label: v.title,
         prop: v.dataIndex,
         type: v.filterType,
+        options: v.options,
       };
     });
 };

@@ -7,6 +7,7 @@
           orderable
           :loading="loading"
           :filters="filters"
+          :filterSelectSearchable="false"
           :columns="columns"
           :dataSource="dataSource"
           :total="total"
@@ -55,12 +56,30 @@ export default {
         { title: "姓名", dataIndex: "name", filterType: "Input" },
         { title: "年龄", dataIndex: "age", filterType: "InputNumber" },
         { title: "生日", dataIndex: "bothDate", filterType: "DatePicker" },
-        { title: "城市", dataIndex: "city", filterType: "Select" },
+        {
+          title: "城市",
+          dataIndex: "city",
+          filterType: "Select",
+          options: [
+            { label: "北京", value: "1" },
+            { label: "上海", value: "2" },
+          ],
+        },
         {
           title: "班级",
           dataIndex: "class",
           width: 120,
           filterType: "Cascader",
+          options: [
+            {
+              label: "一年级",
+              value: "1",
+              children: [
+                { label: "一班", value: "1-1" },
+                { label: "二班", value: "1-2" },
+              ],
+            },
+          ],
         },
         {
           title: "月份",
@@ -90,7 +109,7 @@ export default {
         },
       ],
       dataSource: [],
-      total: 0
+      total: 0,
     };
   },
   methods: {

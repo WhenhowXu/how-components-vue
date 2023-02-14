@@ -15,6 +15,9 @@ export default {
     orderable: { type: Boolean, default: false },
     emptyTag: { type: String, default: "--" }, // 单元格无数据占位符
     defaultColumnWdith: { type: Number, default: 70 },
+
+    filterAllowClear: { type: Boolean, default: true }, // 筛选是否都可以清空
+    filterSelectSearchable: { type: Boolean, default: true }, // 选项是否可以搜索
   },
   data() {
     return {
@@ -38,7 +41,6 @@ export default {
       columns,
       dataSource,
       total,
-      filters,
       $scopedSlots,
       $attrs,
       $listeners,
@@ -50,7 +52,9 @@ export default {
     const filterProps = {
       props: {
         feilds: filterSearchFields(columns),
-        formData: filters,
+        formData: this.filters,
+        allAllowClear: this.filterAllowClear,
+        allSelectSearchable: this.filterSelectSearchable,
       },
       on: {
         search: $listeners.search,
@@ -94,8 +98,8 @@ export default {
         <div class="hao-pagination-wrapper">
           <Pagination
             {...paginationProps}
-            v-model={filters.page}
-            pageSize={filters.size}
+            v-model={this.filters.page}
+            pageSize={this.filters.size}
           />
         </div>
       </div>

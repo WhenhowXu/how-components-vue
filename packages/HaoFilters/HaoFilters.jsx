@@ -13,7 +13,7 @@ import {
 } from "ant-design-vue";
 import { FilterTypes } from "./enums";
 import HaoFoldButton from "../HaoFoldButton";
-import { getPlacehoder } from "./utils";
+import { getFieldProps } from "./utils";
 
 const { MonthPicker, WeekPicker } = DatePicker;
 export const FieldComponents = {
@@ -30,9 +30,11 @@ export default {
   props: {
     feilds: { type: Array, default: () => [] },
     formData: { type: Object, default: () => ({}) },
-    allAllowClear: { type: Boolean, default: true },
     labelWidth: { type: Number, default: 70 },
     fieldWidth: { type: Number, default: 240 },
+    optionsObj: { type: Object, default: () => ({}) },
+    allAllowClear: { type: Boolean, default: true }, // 表单是否都可以清空
+    allSelectSearchable: { type: Boolean, default: true }, // 选项是否可以搜索
   },
   data() {
     return {
@@ -43,7 +45,8 @@ export default {
     renderFields(feilds = []) {
       if (!Array.isArray(feilds)) return "";
       let showSpan = 6;
-      const { formData, allAllowClear, collapsed } = this;
+      const { collapsed } = this;
+      let _form = this.formData;
       return feilds.map((f) => {
         const T = FieldComponents[f.type];
         showSpan += 6;
@@ -52,20 +55,18 @@ export default {
             label: f.label,
             prop: f.prop,
             labelCol: { span: 6 },
-            wrapperCol: { span: 16 },
+            wrapperCol: { span: 18 },
           },
         };
-        const fieldProps = {
-          props: {
-            placeholder: getPlacehoder(f),
-            allowClear: allAllowClear,
-          },
-          style: { width: "100%" },
-        };
+        let fieldProps = getFieldProps(f, {
+          allowClear: this.allAllowClear,
+          selectSearchable: this.allSelectSearchable,
+          optionsObj: this.optionsObj || {},
+        });
         return T ? (
           <Col span={6} v-show={collapsed ? showSpan <= 24 : true}>
             <FormModel.Item {...itemProps}>
-              <T {...fieldProps} v-model={formData[f.prop]} />
+              <T {...fieldProps} v-model={_form[f.prop]} />
             </FormModel.Item>
           </Col>
         ) : (
